@@ -1,0 +1,44 @@
+@startuml
+package domain{
+}
+note right of domain : serviceパッケージの処理で\n使うドメイン知識を管理
+
+
+package service{
+    package raw_data_processing{
+    }
+    package extract_causal{
+    }
+    package extract_ner{
+    }
+    package calculate_score{
+    }
+    package make_database{
+    }
+}
+note right of service : 提供サービス（mainファイル）\nとサービス特有の知識・処理を管理
+note right of raw_data_processing : 受領データの整形
+note right of extract_causal : 整形データから因果関係・因果の語句を抽出
+note right of calculate_score : 抽出した因果関係の精度を算出
+note right of make_database : 抽出した語句から因果関係データベースを作成
+
+package utility{
+}
+note right of utility : 普遍的な処理
+
+package resource{
+}
+note right of resource : 設定ファイルや設定値等を管理
+
+
+domain-->utility
+service-->utility
+service-->domain
+service-->resource
+raw_data_processing-->extract_causal
+raw_data_processing-->extract_ner
+extract_causal-->make_database
+extract_ner-->make_database
+extract_causal-->calculate_score
+
+@enduml
